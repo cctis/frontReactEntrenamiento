@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.modal {
+    position: absolute;
+    background-color: rgba(176, 166, 166, 0.92);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+}
+.modal .cerrar-modal {
+    position: absolute;
+    right: 3rem;
+    top: 3rem;
+    width: 3rem;
+    height: 3rem;
+}
+.modal .cerrar-modal img {
+    width: 100%;
+}
+
+.contenedor {
+    width: 90%;
+    max-width: 80rem;
+    margin: 0 auto;
+}
+
+.contenedorFormulario{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .formularioEmpleado {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 400px;
+    margin: 0 left;
+    padding: 20px;
+    
+   
+    
+  }
+  
+  .formularioEmpleado h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: large;
+    font-weight: bold;
+  }
+  
+  .formularioEmpleado form {
+    display: flex;
+    flex-direction: column;
+    
+  }
+  
+  .formularioEmpleado label {
+    margin-bottom: 5px;
+    color: #666;
+  }
+  
+  .formularioEmpleado input,
+  .formularioEmpleado select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    width: 100%;
+  }
+  
+  .formularioEmpleado input[type="submit"],
+  .mensajeError {
+    background-color: #4caf50;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  .formularioEmpleado input[type="submit"]:hover {
+    background-color: #45a049;
+  }
+  
