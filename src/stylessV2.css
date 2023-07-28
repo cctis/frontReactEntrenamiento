@@ -1,6 +1,15 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+.parrafoInformativo{
+  font-size: 20px;
+ 
+}
+
+.contenedor,
+.botonCrearEmpleado{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
 
 .modal {
@@ -11,7 +20,8 @@
     right: 0;
     bottom: 0;
     width: 100%;
-    height: 100%;
+    height: 900px;
+    
 }
 .modal .cerrar-modal {
     position: absolute;
@@ -45,9 +55,7 @@
     width: 400px;
     margin: 0 left;
     padding: 20px;
-    
-   
-    
+ 
   }
   
   .formularioEmpleado h1 {

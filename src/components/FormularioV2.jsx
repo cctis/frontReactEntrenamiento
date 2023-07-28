@@ -4,7 +4,7 @@ import CerrarBtn from '../img/cerrar.svg'
 
 export const FormularioV2 = ({ empleado, handleSubmit, handleClose }) => {
 
-    const { idEmpleado } = empleado || {};
+    const { id } = empleado || {};
 
 
     const [meta, setMeta] = useState({
@@ -34,6 +34,7 @@ export const FormularioV2 = ({ empleado, handleSubmit, handleClose }) => {
         fechaNacimiento,
         estado,
         lenguajeProgramacion } = meta
+        
     const [error, setError] = useState(false)
 
     useEffect(() => {
@@ -131,7 +132,7 @@ export const FormularioV2 = ({ empleado, handleSubmit, handleClose }) => {
                         <option value="javascript">JavaScript</option>
                     </select>
 
-                    <input type="submit" value={empleado.idEmpleado ? 'Editar Empleado' : 'Crear Empleado'} />
+                    <input type="submit" value={empleado.id ? 'Editar Empleado' : 'Crear Empleado'} />
                 </form>
 
             </div>

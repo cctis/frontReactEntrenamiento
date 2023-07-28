@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { Empleado } from "./Empleado"
-import { Paginacion } from './Paginacion';
 
- const ListaEmpleadosV2 = ({empleados,eliminarEmpleado, handleEdit}) => {
+
+
+ const ListaEmpleadosV2 = ({empleados,eliminarEmpleado, handleEdit,handleView}) => {
 
     const [currentPage, setCurrentPage] = useState(1);
     const [employeesPerPage] = useState(3);
@@ -50,18 +51,18 @@ import { Paginacion } from './Paginacion';
             {
               sortedEmpleados.map( (empleado) =>(
   
-                 <Empleado key={empleado.idEmpleado} empleado={empleado}  eliminarEmpleado={eliminarEmpleado} handleEdit={handleEdit} ></Empleado>
+                 <Empleado key={empleado.idEmpleado} empleado={empleado}  eliminarEmpleado={eliminarEmpleado} handleEdit={handleEdit} handleView={handleView}></Empleado>
     
               ))
           }
              
             </tbody>
   
-            <Paginacion
+            {/* <Paginacion
           employeesPerPage={employeesPerPage}
           totalEmployees={empleados.length}
           paginate={paginate}
-        />
+        /> */}
           </table>
       </>
     )
