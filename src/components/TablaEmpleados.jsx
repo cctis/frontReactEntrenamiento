@@ -2,11 +2,9 @@ import React, { useState } from 'react'
 import { Space, Table, Tag } from 'antd';
 import { Pagination } from 'antd';
 import { LoadingOutlined,EyeOutlined,EditOutlined,DeleteOutlined} from '@ant-design/icons';
-import { useEmployees } from '../hooks/useEmployees';
+import { useEmployees } from '../hooksGraphql/useEmployees';
 
 const { Column} = Table;
-
-
 
 export default function TablaEmpleados({ handleEdit, handleView,handleEliminar }) {
 
@@ -14,12 +12,6 @@ export default function TablaEmpleados({ handleEdit, handleView,handleEliminar }
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOrder, setSortOrder] = useState('descend');
   const {error,loading,data}=useEmployees(currentPage);
-
-
-  const onchange = (newPage) => {
-    setCurrentPage(newPage);
-
-  };
 
 
   if (loading) return <div><LoadingOutlined /></div>
@@ -31,6 +23,7 @@ export default function TablaEmpleados({ handleEdit, handleView,handleEliminar }
 
       <Table dataSource={data.employees.data.map((dato) => {
         return { ...dato }
+
       })} pagination={false} >
 
 
@@ -100,14 +93,14 @@ export default function TablaEmpleados({ handleEdit, handleView,handleEliminar }
             <Space size="middle">
               <EyeOutlined onClick={() => handleView(empleado)}/>
               <EditOutlined onClick={() => handleEdit(empleado)} />
-              <DeleteOutlined onClick={handleEliminar} />
+              <DeleteOutlined onClick={() => handleEliminar(empleado)} />
               </Space>
           )}
         />
 
       </Table>
 
-      <Pagination defaultCurrent={currentPage} total={500} onChange={onchange} />
+      <Pagination defaultCurrent={currentPage} total={500} onChange={(newPage) => {setCurrentPage(newPage)}} />
     </div>
 
   );

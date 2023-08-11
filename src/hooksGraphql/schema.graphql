@@ -1,0 +1,44 @@
+schema {
+    query: Query
+    mutation: Mutation
+}
+type Employee{
+    dateEntry:string
+      documentTypeId: string
+      document: string
+      name: string
+      surname: string
+      gender: string
+      birthPlace: string
+      birthDate:string
+      
+      programmingLanguages:[]
+}
+type CreateEmployeeInput{
+     dateEntry:string
+      documentTypeId: string
+      document: string
+      name: string
+      surname: string
+      gender: string
+      birthPlace: string
+      birthDate:string
+      programmingLanguages:[]
+}
+
+type UpdateEmployeeInput{
+     dateEntry:string
+      documentTypeId: string
+      document: string
+      name: string
+      surname: string
+      gender: string
+      birthPlace: string
+      birthDate:string
+      
+      programmingLanguages:[]
+}
+type Mutation{
+   createEmployee(input: CreateEmployeeInput!): Employee,
+   updateEmployee(input: UpdateEmployeeInput!): Employee,
+}

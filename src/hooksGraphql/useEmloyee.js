@@ -24,15 +24,19 @@ query getEmployee($id:ID!){
 }`
 
 export const useEmployee = (id) => {
-    const {data,error,loading}= useQuery(GET_EMPLOYEE,{
+
+    console.log("llegue al hook empleado")
+    const {data:datosEmpleado,error:errorEmpleado,loading:cargaEmpleado}= useQuery(GET_EMPLOYEE,{
         variables:{
             id
         }
     })
 
+    
+
     return{
-        data,
-        error,
-        loading
+        datosEmpleado,
+        errorEmpleado,
+        cargaEmpleado
     }
 }

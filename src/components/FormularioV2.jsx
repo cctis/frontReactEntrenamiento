@@ -1,61 +1,48 @@
-import React, { useEffect, useState } from 'react'
+import React, {  useState } from 'react'
 import { Error } from "./Error"
-import CerrarBtn from '../img/cerrar.svg'
+import {Form,Input,Select,Button} from 'antd';
+import { useDocumentTypes } from '../hooksGraphql/useDocumentTypes';
+import { useProgrammingLanguages } from '../hooksGraphql/useProgrammingLanguages';
 
-export const FormularioV2 = ({ empleado, handleSubmit, handleClose }) => {
+export const FormularioV2 = ({  handleSubmit,setMeta, meta,handleCancel,componentButtonDisabled,componentDisabled,compoDisabled,setError,error}) => {
 
-    const { id } = empleado || {};
+    const { id } = meta || {};
+    
+    const { data } = useDocumentTypes();
+    const { datosLenguajes } = useProgrammingLanguages();
+    
 
-
-    const [meta, setMeta] = useState({
-        fechaIngreso: '',
-        tipoDocumento: '',
-        documento: '',
-        nombres: '',
-        apellidos: '',
-        genero: '',
-        lugarNacimiento: '',
-        fechaNacimiento: '',
-        estado: '',
-        lenguajeProgramacion: '',
-    });
-
-
-    const handleMeta = (param) => setMeta((_meta) => ({ ..._meta, ...param }));
-
+    
     const {
-        fechaIngreso,
-        tipoDocumento,
-        documento,
-        nombres,
-        apellidos,
-        genero,
-        lugarNacimiento,
-        fechaNacimiento,
-        estado,
-        lenguajeProgramacion } = meta
+       
+        dateEntry,
+        documentTypeId,
+        document,
+        name,
+        surname,
+        gender,
+        birthPlace,
+        birthDate,
+        programmingLanguages
+    } = meta
         
-    const [error, setError] = useState(false)
-
-    useEffect(() => {
-        if (Object.keys(empleado).length > 0) {
-            handleMeta({ ...empleado })
-        }
-    }, [empleado])
-
-
+    
+  const handleMeta = (param) => setMeta((_meta) => ({ ..._meta, ...param }));
+ 
+ 
 
     const onSubmit = (e) => {
         e.preventDefault();
 
+        
         //validacion del formulario
 
-        if (Object.values(meta).includes('')) {
-            console.log('hay un campo vacio')
+        // if (Object.values(meta).includes('')) {
+        //     console.log('hay un campo vacio')
 
-            setError(true);
-            return;
-        }
+        //     setError(true);
+        //     return;
+        // }
 
         setError(false);
         handleSubmit(meta);
@@ -63,79 +50,85 @@ export const FormularioV2 = ({ empleado, handleSubmit, handleClose }) => {
 
     }
 
+    const handleFormChange = (field, value) => {
+        setMeta({ ...meta, [field]: value });
+      };
+
     return (
-        <div className='modal'>
+    
 
-            <div className="cerrar-modal">
-                <img
-                    src={CerrarBtn}
-                    alt="cerrar modal"
-                    onClick={handleClose}
-                />
-            </div>
+            <div className="contenedorFormulario" >
 
-            <div className="contenedorFormulario">
-
-                <form onSubmit={onSubmit} className='formularioEmpleado'>
-                    <h1>Formulario de Empleado</h1>
+                <Form onSubmit={onSubmit} className='formularioEmpleado'>
+                  
                     {error && <Error mensaje={'todos los campos son obligatorios'} />}
 
-                    <label htmlFor="idEmpleado">ID Empleado:</label>
-                    <input type="text" id='idEmpleado' readOnly />
+                   
+                    <Form.Item label="Id Empleado:" >
+                            
+                            <Input disabled={componentDisabled} value={id} style={{width: 300}}/>
+                     </Form.Item>
 
                     <label htmlFor="fechaIngreso">Fecha de ingreso:</label>
-                    <input type="date" id='fechaIngreso' value={fechaIngreso} onChange={(event) => { handleMeta({ fechaIngreso: event.target.value }) }} />
+                    <input type="date" id='dateEntry' value={dateEntry} disabled={compoDisabled} onChange={(event) => { handleMeta({ dateEntry: event.target.value }) }} />
 
-                    <label htmlFor="tipoDocumento">Tipo de documento:</label>
-                    <select id="tipoDocumento" value={tipoDocumento} onChange={(event) => { handleMeta({ tipoDocumento: event.target.value }) }}>
-                        <option value="">Seleccionar tipo</option>
-                        <option value="cedula">Cédula de ciudadanía</option>
-                        <option value="pasaporte">Pasaporte</option>
-                    </select>
+                        <Form.Item label="Tipo de documento" required>
+                        <Select id='documentTypeId' onChange={(value) => handleFormChange('documentTypeId', value)} placeholder="Selecciona un tipo de documento" style={{width: 200}} disabled={compoDisabled}>
+                        {data && (data.documentTypes || []).map((tipo) => (
+                            <Select.Option key={tipo.id} value={tipo.id}>
+                            {tipo.name}
+                            </Select.Option>
+                        ))}
+                        </Select>
+                    </Form.Item>
 
                     <label htmlFor="documento">Número de documento:</label>
-                    <input type="text" id='documento' value={documento} onChange={(event) => { handleMeta({ documento: event.target.value }) }} />
+                    <input type="text" id='document' value={document} disabled={compoDisabled} onChange={(event) => { handleMeta({ document: event.target.value }) }} />
 
                     <label htmlFor="nombres">Nombres:</label>
-                    <input type="text" id='nombres' value={nombres} onChange={(event) => { handleMeta({ nombres: event.target.value }) }} />
+                    <input type="text" id='nombre' value={name} disabled={compoDisabled} onChange={(event) => { handleMeta({ name: event.target.value }) }} />
 
                     <label htmlFor="apellidos">Apellidos:</label>
-                    <input type="text" id='apellidos' value={apellidos} onChange={(event) => { handleMeta({ apellidos: event.target.value }) }} />
-
+                    <input type="text" id='surname' value={surname} disabled={compoDisabled} onChange={(event) => { handleMeta({ surname: event.target.value }) }} />
 
                     <label htmlFor="genero">Género:</label>
-                    <select name="genero" id="genero" value={genero} onChange={(event) => { handleMeta({ genero: event.target.value }) }}>
+                    <select  value={gender} disabled={compoDisabled} onChange={(event) => { handleMeta({ gender: event.target.value }) }}>
                         <option value="">Seleccionar género</option>
-                        <option value="masculino">Masculino</option>
-                        <option value="femenino">Femenino</option>
+                        <option value="M"  >M</option>
+                        <option value="F" >F</option>
                     </select>
 
+                   
                     <label htmlFor="lugarNacimiento">Lugar de nacimiento:</label>
-                    <input type="text" id='lugarNacimiento' value={lugarNacimiento} onChange={(event) => { handleMeta({ lugarNacimiento: event.target.value }) }} />
+                    <input type="text" id='birthPlace'disabled={compoDisabled} value={birthPlace} onChange={(event) => { handleMeta({ birthPlace: event.target.value }) }}  />
 
                     <label htmlFor="fechaNacimiento">Fecha de nacimiento:</label>
-                    <input type="date" id='fechaNacimiento' value={fechaNacimiento} onChange={(event) => { handleMeta({ fechaNacimiento: event.target.value }) }} />
+                    <input type="date" id='birthDate'disabled={compoDisabled} value={birthDate} onChange={(event) => { handleMeta({ birthDate: event.target.value }) }} />
 
-                    <label htmlFor="estado">Estado:</label>
-                    <select name="estado" id="estado" value={estado} onChange={(event) => { handleMeta({ estado: event.target.value }) }}>
-                        <option value="">Seleccionar estado</option>
-                        <option value="activo">Activo</option>
-                        <option value="inactivo">Inactivo</option>
-                        <option value="licencia">En licencia</option>
-                    </select>
+                
+                    <Form.Item name="lenguajes" label="Lenguaje de programación" rules={[{ required: true, message: 'Selecciona al menos un lenguaje' }]}>
+                        <Select id='programmingLanguages' onChange={(value) => handleFormChange('programmingLanguages', value)}  mode="multiple" style={{width: 200}} disabled={compoDisabled} >
+                            {datosLenguajes && (datosLenguajes.programmingLanguages || []).map(lenguaje => (
+                            <Select.Option key={lenguaje.id} value={lenguaje.id} >
+                                {lenguaje.name}
+                            </Select.Option>
+                            ))}
+                        </Select>
+                        </Form.Item>
+              
 
-                    <label htmlFor="lenguajeProgramacion">Lenguaje de programación:</label>
-                    <select name="lenguajeProgramacion" id="lenguajeProgramacion" value={lenguajeProgramacion} onChange={(event) => { handleMeta({ lenguajeProgramacion: event.target.value }) }}>
-                        <option value="">Seleccionar lenguaje</option>
-                        <option value="java">Java</option>
-                        <option value="python">Python</option>
-                        <option value="javascript">JavaScript</option>
-                    </select>
-
-                    <input type="submit" value={empleado.id ? 'Editar Empleado' : 'Crear Empleado'} />
-                </form>
+                    <Form.Item >
+                            <Button type="primary" htmlType="submit" onClick={onSubmit} disabled={componentButtonDisabled}>
+                            {id ? 'Editar Empleado' : 'Crear Empleado'}
+                            </Button>
+                            <Button htmlType="button" onClick={handleCancel} >
+                                Regresar
+                            </Button>
+                            
+                        </Form.Item>
+                </Form>
 
             </div>
-        </div>
+        
     )
 }

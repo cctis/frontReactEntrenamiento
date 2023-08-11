@@ -39,6 +39,7 @@ query getEmployees($name:String,$first:Int!,$page:Int!){
 
 
 export const useEmployees = (currentPage) => {
+  console.log("hook employeees")
     const { error, data, loading } = useQuery(GET_EMPLOYEES, { variables: { name: "%%", first: 10, page: currentPage } });
 
     return{
