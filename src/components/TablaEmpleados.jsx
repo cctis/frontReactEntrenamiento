@@ -27,7 +27,7 @@ export default function TablaEmpleados({ handleEdit, handleView,handleEliminar }
       })} pagination={false} >
 
 
-        <Column title="Nombres y Apellidos" key={data.index}
+        <Column title="Nombres y Apellidos" key={data.name}
           render={(name) =>
             <>
               {name.name + " " + name.surname}
@@ -55,12 +55,12 @@ export default function TablaEmpleados({ handleEdit, handleView,handleEliminar }
           render={(programmingLanguages) => (
             <>
               {programmingLanguages.map((programmingLanguage,index) => (
-                //  <>
+              
+              //  <>
                 //    {programmingLanguage.name + ","}
                 // </>
 
                 //console.log(programmingLanguage.name)
-
                 <>
                   <Tag color="blue" key={index}>
                     {programmingLanguage.name}

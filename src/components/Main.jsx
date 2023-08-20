@@ -30,7 +30,15 @@ const Main = () => {
     const [componentButtonDisabled, setComponentButtonDisabled] = useState(false);
     const [componentDisabled, setComponentDisabled] = useState(true);
     const [compoDisabled, setCompoDisabled] = useState(false);
+    const [compoDisabledDocument,setCompoDisabledDocument]=useState(false);
     const [error, setError] = useState(false)
+    const [edad, setEdad] = useState('');
+    const [aniosLaborados, setAniosLaborados] = useState('');
+    const [boton, setBoton] = useState(false);
+
+    const [stateLenguaje, setStateLenguaje] = useState(false)
+    const [stateLenguajeShow, setStateLenguajeShow] = useState(false)
+    const [stateEdadAntiguedad, setStateEdadAntiguedad] = useState(false)
 
     const [empleado, setEmpleado] = useState({});
     const [empleados, setEmpleados] = useState([]);
@@ -57,6 +65,9 @@ const Main = () => {
         programmingLanguages: [],
     });
 
+    if (cargaEmpleado) return <div><LoadingOutlined /></div>
+  
+
     const showModal = () => {
 
         setMeta({
@@ -75,9 +86,14 @@ const Main = () => {
         });
         setComponentButtonDisabled(false)
         setCompoDisabled(false)
+        setCompoDisabledDocument(false)
         setError(false)
+        setBoton(true)
         setIsModalOpen(true);
-
+        setStateEdadAntiguedad(false)
+        setStateLenguajeShow(false)
+        setAniosLaborados(false)
+        setStateLenguaje(true)
     };
 
     const handleOk = () => {
@@ -86,8 +102,6 @@ const Main = () => {
     const handleCancel = () => {
         setIsModalOpen(false);
     };
-
-
 
 
     const handleEdit = (values) => {
@@ -99,9 +113,14 @@ const Main = () => {
         setMeta(empleadoBuscado)
         setComponentButtonDisabled(false);
         setCompoDisabled(false)
-
-        handleSubmit(empleadoBuscado)
+        setCompoDisabledDocument(true)
+        setStateLenguajeShow(false)
+        setStateLenguaje(true)
         console.log('values= ', empleadoBuscado)
+        setStateEdadAntiguedad(false)
+        setAniosLaborados(false)
+        setBoton(true)
+        handleSubmit(empleadoBuscado)
         setIsModalOpen(true)
     }
 
@@ -109,17 +128,33 @@ const Main = () => {
 
         setIdEmpl(values.id)
 
-        if (datosEmpleado === undefined) return console.log('cargando...')
-
+        
         const empleadoBuscado = datosEmpleado.employee
 
+        const newbirthDate = new Date(values.birthDate);
+        const today = new Date();
+        const age = today.getFullYear() - newbirthDate.getFullYear();
+
+        setEdad(age)
+
+        const newdataEntry = new Date(values.dateEntry);
+        const hoy = new Date();
+        const antiguedad = hoy.getFullYear() - newdataEntry.getFullYear();
+
+        setAniosLaborados(antiguedad)
       
         console.log("empleado buscado", empleadoBuscado)
         setMeta(empleadoBuscado)
         setComponentButtonDisabled(true)
         setCompoDisabled(true)
+        setCompoDisabledDocument(true)
+        setStateLenguajeShow(true)
+        setStateLenguaje(false)
+        setStateEdadAntiguedad(true)
+        setBoton(false)
         setIsModalOpen(true)
 
+        
 
     }
 
@@ -127,26 +162,34 @@ const Main = () => {
 
         setIdEmpl(values.id)
 
-
-
         const empleadoBuscado = datosEmpleado.employee
+
+        const newdataEntry = new Date(values.dateEntry);
+        const hoy = new Date();
+        const diferenciaEnMilisegundos = hoy - newdataEntry;
+        const milisegundosEnDosDias = 2 * 24 * 60 * 60 * 1000; 
+
 
         console.log("empleado buscado", empleadoBuscado.id)
 
-        const respuesta = confirm(`desea eliminar el id ${empleadoBuscado.id} empleado?`)
-
-
-
-
-        if (respuesta) {
-
-            deleteEmployee(empleadoBuscado.id)
-
+        
+        if (diferenciaEnMilisegundos <= milisegundosEnDosDias) {
+            const respuesta = window.confirm(`¿Desea eliminar al empleado con ID ${empleadoBuscado.id}?`);
+    
+            if (respuesta) {
+                deleteEmployee(empleadoBuscado.id);
+                const mensaje = `Empleado ${empleadoBuscado.id} eliminado exitosamente.`;
+                window.alert(mensaje);
+            }
+        } else {
+            const mensaje = `No se puede eliminar al empleado ${empleadoBuscado.id} debido a la antigüedad.`;
+            window.alert(mensaje);
         }
+
     }
 
 
-    const handleSubmit = (values) => {
+    const handleSubmit =  (values) => {
 
         // console.log('values= ', values)
 
@@ -162,6 +205,8 @@ const Main = () => {
 
         if (id) {
             //editando el registro
+
+             
             
             console.log("estoy en editar", values)
             console.log("estoy en EL ID", id)
@@ -170,29 +215,37 @@ const Main = () => {
             const documentAsNumber = parseInt(document, 10);
 
             try {
-                updateEmployee({
-                    variables: {
-                        id,
-                        input: {
-                            dateEntry,
-                            documentTypeId:documentTypeIdAsNumber,
-                            document:documentAsNumber,
-                            name,
-                            surname,
-                            gender,
-                            birthPlace,
-                            birthDate,
-                           
-                            programmingLanguages:{
-                                id
-                              }
-                              }
-                    }
-                })
+
+                 setEmpleados(
+                    updateEmployee({
+                        variables: {
+                            id,
+                            input: {
+                                dateEntry,
+                                documentTypeId:documentTypeIdAsNumber,
+                                document:documentAsNumber,
+                                name,
+                                surname,
+                                gender,
+                                birthPlace,
+                                birthDate,
+                                programmingLanguages
+                                  }
+                        }
+                    })
+                )
+                
+                //  const mensaje = `Empleado ${id} ${name} ${surname} editado exitosamente.`;
+                //  window.alert(mensaje);
+
             } catch (error) {
                 console.log(error)
+                
+                    const mensaje = `Empleado ${id} ${name} ${surname} NO fue editado presenta el error = ${error}.`;
+                    window.alert(mensaje);
             }
 
+            
 
         } else {
             //nuevo registro
@@ -206,27 +259,41 @@ const Main = () => {
 
             try {
                 
-                createEmployee({
-                    variables: {
-                        input: {
-                            dateEntry,
-                            documentTypeId:documentTypeIdAsNumber,
-                            document:documentAsNumber,
-                            name,
-                            surname,
-                            gender,
-                            birthPlace,
-                            birthDate,
-                            programmingLanguages
+             setEmpleados(
+                    createEmployee({
+                        variables: {
+                            input: {
+                                dateEntry,
+                                documentTypeId:documentTypeIdAsNumber,
+                                document:documentAsNumber,
+                                name,
+                                surname,
+                                gender,
+                                birthPlace,
+                                birthDate,
+                                programmingLanguages
+                            }
                         }
-                    }
-                })
+                    })
+                )
+               
+
+                
+                    const mensaje = `Empleado ${name} ${surname} creado exitosamente.`;
+                    window.alert(mensaje);
+                 
+
             } catch (error) {
                 console.log(error)
+                
+                    const mensaje = `Empleado ${id} ${name} ${surname} NO fue creado presenta el error = ${error}.`;
+                    window.alert(mensaje);
+                 
             }
 
 
         }
+        
 
         setIsModalOpen(false)
 
@@ -274,7 +341,19 @@ const Main = () => {
                     compoDisabled={compoDisabled}
                     setError={setError}
                     error={error}
-
+                    stateLenguaje={stateLenguaje}
+                    setStateLenguaje={setStateLenguaje}
+                    stateLenguajeShow={stateLenguajeShow}
+                    setStateLenguajeShow={setStateLenguajeShow}
+                    setStateEdadAntiguedad={setStateEdadAntiguedad}
+                    stateEdadAntiguedad={stateEdadAntiguedad}
+                    edad={edad}
+                    setEdad={setEdad}
+                    aniosLaborados={aniosLaborados}
+                    boton={boton}
+                    setBoton={setBoton}
+                    compoDisabledDocument={compoDisabledDocument}
+                    setCompoDisabledDocument={setCompoDisabledDocument}
                 ></FormularioV2>
             </Modal>
         </div>

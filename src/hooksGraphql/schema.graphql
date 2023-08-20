@@ -35,7 +35,6 @@ type UpdateEmployeeInput{
       gender: string
       birthPlace: string
       birthDate:string
-      
       programmingLanguages:[]
 }
 type Mutation{
