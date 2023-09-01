@@ -21,7 +21,7 @@ export default function TablaEmpleados({ handleEdit, handleView,handleEliminar }
 
     <div>
 
-      <Table dataSource={data.employees.data.map((dato) => {
+      <Table rowKey='id' dataSource={data.employees.data.map((dato,index) => {
         return { ...dato }
 
       })} pagination={false} >
@@ -53,8 +53,8 @@ export default function TablaEmpleados({ handleEdit, handleView,handleEliminar }
           dataIndex="programmingLanguages"
           key="programmingLanguages"
           render={(programmingLanguages) => (
-            <>
-              {programmingLanguages.map((programmingLanguage,index) => (
+       
+              programmingLanguages.map((programmingLanguage,index) => (
               
               //  <>
                 //    {programmingLanguage.name + ","}
@@ -69,12 +69,12 @@ export default function TablaEmpleados({ handleEdit, handleView,handleEliminar }
 
                 </>
 
-              ))}
-            </>
+              ))
+              
           )}
         />
 
-        <Column title="Estado" dataIndex="programmingLanguages" key="programmingLanguages"
+        <Column title="Estado" dataIndex="programmingLanguages" key="programmingLanguages1"
           render={(programmingLanguages) => (
             <>
               {programmingLanguages.map((programmingLanguage) => (

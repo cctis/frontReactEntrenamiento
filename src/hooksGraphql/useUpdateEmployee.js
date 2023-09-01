@@ -32,7 +32,7 @@ input
 
     console.log("este es el id", id)
     
-    const[updateEmployee,{data,loading,error}]= useMutation(SET_UPDATEEMPLOYEE,{
+    const[updateEmployee,{data:dataUpdate,loading,error}]= useMutation(SET_UPDATEEMPLOYEE,{
       variables:{
         id,
         input
@@ -41,6 +41,7 @@ input
 
   
   return [
-    updateEmployee
+    updateEmployee,
+    dataUpdate
   ]
 }
